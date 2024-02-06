@@ -1,0 +1,52 @@
+import cv2
+import numpy as np
+import time
+
+def single_img_patch_fusion(input1, input2, dec_num, win_size, step_len, image_type):
+    # Implement the SingleImgPatchFusion function based on the MATLAB code
+    # Make sure to return the output image
+    # Placeholder implementation (adding input images for demonstration):
+    output = input1 + input2
+    return output
+
+# Specify the paths for the input images
+file_path1 = r"C:\Users\91974\OneDrive\Desktop\epics project\input1.shape.png"
+file_path2 = r"C:\Users\91974\OneDrive\Desktop\epics project\input2.shape.png"
+
+# Read the input images
+I_input1 = cv2.imread(file_path1)
+I_input2 = cv2.imread(file_path2)
+
+# Check if the images were loaded successfully
+if I_input1 is None or I_input2 is None:
+    print("Error: Unable to load one or both of the input images.")
+else:
+    row1, col1, bit1 = I_input1.shape
+    row2, col2, bit2 = I_input2.shape
+
+    # Rest of your code for image fusion...
+
+    dec_num = 2
+    win_size = 33
+    step_len = round(win_size - (win_size - 2))
+    image_type = -1
+
+    # Perform image fusion
+    start_time = time.time()
+    output = single_img_patch_fusion(I_input1, I_input2, dec_num, win_size, step_len, image_type)
+    elapsed_time = time.time() - start_time
+
+    # Save the output image
+    method_name = 'MFMEMD'
+    output_name = f"{method_name}_{file_path1.split('/')[-1][:-4]}.bmp"
+    cv2.imwrite(output_name, output.astype(np.uint8))
+
+    # Display the input and output images
+    cv2.imshow('Input Image 1', I_input1)
+    cv2.imshow('Input Image 2', I_input2)
+    cv2.imshow('Output Image', output)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+    # Print processing time
+    print(f"Time taken for processing: {elapsed_time:.2f} seconds")
